@@ -1,0 +1,73 @@
+node_modules/bootstrap/dist/css/bootstrap.min.css
+
+koynv controller html
+
+<div class="container">
+    <h1 class="text-center my-4" >Könyv Bolt</h1>
+    <input type="text" class="form-controll mb-3" placeholder="Keresés..." [(ngModel)]="kereses" />
+    <table class="table table-bordered" >
+        <thead class="table-dark" >
+            <tr>    
+                <th>ISBN</th>
+                <th>Cím</th>
+                <th>Szerző</th>
+                <th>Ár (Ft)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let konyv of szurtKonyvek()" [ngClass]="{'olcso':konyv.ar<=3000, 'draga':konyv.ar>3000}" >
+                <td>{{konyv.ISBN}}</td>
+                <td>{{konyv.cim}}</td>
+                <td>{{konyv.szerzok}}</td>
+                <td>{{konyv.ar}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+konyv controller css
+
+tr.olcso td{
+    background-color: red;
+}
+tr.draga td{
+    background-color: blue;
+}
+
+
+
+konyv controller ts
+
+@Component({
+  selector: 'app-konyv-controller',
+  templateUrl: './konyv-controller.component.html',
+  styleUrls: ['./konyv-controller.component.css']
+})
+export class KonyvControllerComponent implements OnInit {
+  konyvek:any[]=[];
+  kereses:string='';
+  constructor(private http:HttpClient){}
+  ngOnInit(): void {
+    this.http.get<any[]>('/assets/konyvek.json').subscribe({
+      next:(data)=>{
+        this.konyvek=data.map(konyv=>({...konyv, ar: Number(konyv.ar)}));
+        console.log('Adatok betöltve:',this.konyvek);
+      },
+      error:(err)=>console.error('Hiba az adatok betöltésekor:',err)
+    });
+ 
+    }
+   
+      szurtKonyvek():any[]{
+      return this.konyvek.filter(konyv=>
+      konyv.cim.toLowerCase().includes(this.kereses.toLowerCase())
+      );
+
+      }
+  }
+
+
+
+  
