@@ -2,7 +2,7 @@ node_modules/bootstrap/dist/css/bootstrap.min.css
 
 koynv controller html
 
-<div class="container">
+    <div class="container">
     <h1 class="text-center my-4" >Könyv Bolt</h1>
     <input type="text" class="form-controll mb-3" placeholder="Keresés..." [(ngModel)]="kereses" />
     <table class="table table-bordered" >
@@ -23,7 +23,7 @@ koynv controller html
             </tr>
         </tbody>
     </table>
-</div>
+    </div>
 
 
 
