@@ -1,3 +1,5 @@
+38. sor "node_modules/bootstrap/dist/css/bootstrap.min.css",
+
 <div class="container">
     <h1 class="text-center my-4" >Könyv Bolt</h1>
     <input type="text" class="form-controll mb-3" placeholder="Keresés..." [(ngModel)]="kereses" />
