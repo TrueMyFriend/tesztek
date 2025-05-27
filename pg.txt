@@ -1,0 +1,86 @@
+            string[] sd = szoveg.Split(';');
+            this.indulasHelyszin = sd[0];
+            this.utiCel = sd[1];
+            this.indulasDatum = sd[2];
+            this.napok = int.Parse(sd[3]);
+            this.ar = int.Parse(sd[4]);
+            this.szallasNeve = sd[5];
+            this.csillagok = int.Parse(sd[6]);
+            this.utazasMod = sd[7];
+        }
+
+        public string indulasHelyszin { get; set; }
+        public string utiCel { get; set; }
+        public string indulasDatum { get; set; }
+        public int napok { get; set; }
+        public int ar { get; set; }
+        public string szallasNeve { get; set; }
+        public int csillagok { get; set; }
+        public string utazasMod { get; set; }
+
+
+----
+
+
+    public partial class Form1 : Form
+    {
+        //4
+        OpenFileDialog ofd;
+        List<Utazas> tabla = new List<Utazas>();
+
+
+
+
+-----
+
+
+
+(megnyitastoolstrip)
+
+ofd = new OpenFileDialog();
+if (ofd.ShowDialog() == DialogResult.OK) { 
+StreamReader olvaso = new StreamReader(ofd.FileName);
+    olvaso.ReadLine();
+    while (!olvaso.EndOfStream)
+    {
+        tabla.Add(new Utazas(olvaso.ReadLine()));
+    }
+    olvaso.Close();
+}
+
+for (int i = 0; i < tabla.Count; i++)
+{
+    listBox1.Items.Add($"{tabla[i].utiCel} - {tabla[i].indulasDatum} ");
+}
+
+//7
+var csoportositott = tabla.GroupBy(x => x.utazasMod);
+foreach (var csoport in csoportositott)
+{
+    comboBox1.Items.Add(csoport.Key);
+}
+
+
+
+
+-----
+listbox1.selectedIndexChang
+
+            int index = listBox1.SelectedIndex;
+            textBox1.Text = $"{tabla[index].napok}";
+            textBox2.Text = $"{tabla[index].ar}";
+            textBox3.Text = $"{tabla[index].szallasNeve}";
+            textBox4.Text = $"{tabla[index].utazasMod}";
+
+
+
+
+------
+
+
+legjobbajanlatbutton
+
+ var legolcsobb = tabla.Where(x => x.utazasMod == comboBox1.SelectedItem).OrderBy(x => x.ar).First();
+ listBox2.Items.Clear();
+ listBox2.Items.Add($"{legolcsobb.utiCel} - {legolcsobb.indulasDatum}");
+ listBox2.Items.Add($"{legolcsobb.napok} nap - {legolcsobb.ar} Ft");

@@ -1,0 +1,143 @@
+schema
+
+CREATE TABLE autok(
+    id	INT AUTO_INCREMENT PRIMARY KEY,
+    modell	VARCHAR(50)	UNIQUE NOT NULL,
+    ulesek_szama INT,
+    fogyasztas	DECIMAL(5,2),
+    sajat_tomeg	INT,
+    panoramateto boolean,
+    ulesfutes boolean
+);
+
+
+----
+
+data
+INSERT INTO autok (modell,ulesek_szama,fogyasztas,sajat_tomeg,panoramateto,ulesfutes)
+VALUES
+('VITARA',5,4.7,1600,false,false),
+('SWIFT',5,3.85,918,false,false),
+('ACROSS',5,5.68,1940,false,true);
+
+
+
+
+@Entity
+@Table(name = "autok")
+public class Auto {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private int id;
+
+  @Column(name = "modell")
+  private String modell;
+
+  @Column(name = "ulesek_szama")
+  private int ulesekSzama;
+
+  @Column(name = "fogyasztas")
+  private double fogyasztas;
+
+  @Column(name = "sajat_tomeg")
+  private int sajatTomeg;
+
+  @Column(name = "panoramateto")
+  private boolean panoramateto;
+
+  @Column(name = "ulesfutes")
+  private boolean ulesfutes;
+
+
+------------
+
+@Repository
+public interface AutoRepository extends JpaRepository<Auto,Integer> {
+  Auto findByModell(String modell);
+}
+
+
+-----------
+
+controller
+@RestController
+@RequestMapping("/api")
+public class HomeController {
+
+  private AutoService autoService;
+
+  @Autowired
+  public HomeController(AutoService autoService) {
+    this.autoService = autoService;
+  }
+
+  @GetMapping("/autok")
+  public ResponseEntity<?> getAutok(){
+    return new ResponseEntity<>(autoService.getAutok(), HttpStatus.OK);
+  }
+
+  @PostMapping("/autok")
+  public ResponseEntity<?> addauto(@RequestBody Auto auto) {
+
+    if (autoService.isTheModellExist(auto.getModell())){
+      return new ResponseEntity<>("A modell már létezik az adatbázisban: "+auto.getModell(), HttpStatus.BAD_REQUEST);
+    }
+
+    Auto newAuto=new Auto();
+    newAuto.setModell(auto.getModell());
+    newAuto.setUlesekSzama(auto.getUlesekSzama());
+    newAuto.setFogyasztas(auto.getFogyasztas());
+    newAuto.setSajatTomeg(auto.getSajatTomeg());
+    newAuto.setPanoramateto(auto.isPanoramateto());
+    newAuto.setUlesfutes(auto.isUlesfutes());
+
+    Auto savedAuto=autoService.saveAuto(newAuto);
+
+    Map<String, Integer> id = new HashMap<>();
+    id.put("id", savedAuto.getId());
+
+    return new ResponseEntity<>(id, HttpStatus.CREATED);
+  }
+}
+
+
+---
+autoserviec
+
+  List<Auto> getAutok();
+  boolean isTheModellExist(String modell);
+  Auto saveAuto(Auto auto);
+
+----
+
+impl
+
+@Service
+public class AutoServiceImpl implements AutoService{
+
+  private AutoRepository autoRepository;
+
+  @Autowired
+  public AutoServiceImpl(AutoRepository autoRepository) {
+    this.autoRepository = autoRepository;
+  }
+
+  @Override
+  public List<Auto> getAutok() {
+    return autoRepository.findAll();
+  }
+
+  @Override
+  public boolean isTheModellExist(String modell) {
+    Auto result=autoRepository.findByModell(modell);
+    return result!=null;
+  }
+
+  @Override
+  public Auto saveAuto(Auto auto) {
+    return autoRepository.save(auto);
+  }
+}
+

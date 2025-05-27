@@ -1,0 +1,103 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Szakirodalom</th>
+      <th scope="col">Szépirodalom</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Kardok</td>
+      <td>Azután hazamentem</td>
+
+    </tr>
+    <tr>
+      <td>Harci kések</td>
+      <td>Fekete szív</td>
+
+    </tr>
+    <tr>
+      <td>Pisztolyok</td>
+      <td>Anyád a kilincsen</td>
+
+    </tr>
+    <tr>
+        <td>A békés harcos bölcsessége</td>
+        <td>A futár halála</td>
+  
+      </tr>
+
+  </tbody>
+</table>
+
+
+      
+
+
+<h1 class="text-center font-weight-bolder">Szakirodalom</h1>
+
+
+<div class="col-lg-3 col-md-6 col mb-2">
+
+
+<a href="https://www.warriorshop.hu/termek/kardok/" class="btn btn-primary">Kardok</a>
+
+
+<li><a href="https://www.konyvtunder.hu/" style="text-decoration: none; color: white;">Könyvtündér</a></li>
+
+
+
+
+
+
+
+
+
+CSS CSS CSS CSS CSS CSS CSS CSS
+
+
+
+main, nav{
+    background-image: url("../img/hatterkep.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+main{
+    padding: 20px
+}
+.carousel-caption{
+    color: darkblue;
+    background-color: rgba(255,255,255,.4);
+    border-radius: 20px;
+    box-shadow: 0 0 20px grey;
+}
+main .container{
+    background-color: rgba(255,255,255,.4);
+    border-radius: 20px;
+    box-shadow: 0 0 20px grey
+}
+nav img{
+    height: 3em;
+}
+.text-justify{
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+footer{    
+    padding: 2em 0;
+    background-color: brown;
+    color: white;
+    
+}
+
+table{
+    text-align: center;
+}
+
+li a{
+    text-decoration: none;
+    color: white;
+}

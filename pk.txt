@@ -1,0 +1,133 @@
+ public string helyszin;
+ public string uticel;
+ public string indulas;
+ public int napok;
+ public int ar;
+ public string szallas;
+ public int csillagok;
+ public string utazasMod;
+
+ public Utazas(string szoveg)
+ {
+     string[] sd = szoveg.Split(';');
+     this.helyszin = sd[0];
+     this.uticel = sd[1];
+     this.indulas = sd[2];
+     this.napok = int.Parse(sd[3]);
+     this.ar = int.Parse(sd[4]);
+     this.szallas = sd[5];
+     this.csillagok = int.Parse(sd[6]);
+     this.utazasMod = sd[7];
+ }
+
+
+
+
+--------------------------
+
+List <Utazas> tabla = new List<Utazas>();
+StreamReader olvaso = new StreamReader("utazasok.txt");
+olvaso.ReadLine(); ;
+while (!olvaso.EndOfStream)
+{
+    tabla.Add(new Utazas(olvaso.ReadLine()));
+}
+olvaso.Close();
+
+
+//4
+Console.WriteLine($"4. feladat: A fájlban {tabla.Count} utazási ajánlat található.");
+
+
+//5
+int db = 0;
+int ossz = 0;
+int atlag = 0;
+
+for (int i = 0; i < tabla.Count; i++)
+{
+    if (tabla[i].utazasMod == "Repülő")
+    {
+        ossz += tabla[i].ar;
+        db++;
+    }
+}
+atlag = ossz / db;
+Console.WriteLine($"5. feladat: A repülős utak átlagos ára: {atlag:f2} Ft");
+
+
+
+
+
+
+//6
+
+bool vanJarat = false;
+for (int i = 0; i < tabla.Count; i++) { 
+    if (tabla[i].ar <= 180000 && tabla[i].uticel == "Róma")
+    {
+        Console.WriteLine($"6. feladat: \n\tIdőpont: {tabla[i].indulas} \n\tNapok száma: {tabla[i].napok} \n\tSzállás: {tabla[i].szallas} ({tabla[i].csillagok}*)\n\tUtazás módja {tabla[i].utazasMod}");
+        vanJarat = true;
+        break;
+    }
+}
+if (!vanJarat)
+{
+    Console.WriteLine("Nincs ilyen utazási ajánlat");
+}
+
+Console.WriteLine("7. feladat: Statisztika");
+//7
+int dbRepulo = 0;
+int dbBusz = 0;
+int dbHajo = 0;
+int dbVonat = 0;
+int dbAuto = 0;
+
+for (int i = 0; i < tabla.Count; i++)
+{
+    if (tabla[i].utazasMod == "Repülő")
+    {
+        dbRepulo++;
+    }
+
+    if (tabla[i].utazasMod == "Busz")
+    {
+        dbBusz++;
+    }
+
+    if (tabla[i].utazasMod == "Hajó")
+    {
+        dbHajo++;
+    }
+
+    if (tabla[i].utazasMod == "Vonat")
+    {
+        dbVonat++;
+    }
+
+    if (tabla[i].utazasMod == "Autó")
+    {
+        dbAuto++;
+    }
+
+}
+Console.WriteLine($"\tRepülő : {dbRepulo}");
+Console.WriteLine($"\tBusz : {dbBusz}");
+Console.WriteLine($"\tHajó : {dbHajo}");
+Console.WriteLine($"\tVonat : {dbVonat}");
+Console.WriteLine($"\tAutó : {dbAuto}");
+
+
+
+var Barcelona = tabla.Where(x => x.uticel == "Barcelona").OrderByDescending(x => x.ar);
+StreamWriter iro = new StreamWriter("barcelona.txt");
+
+foreach (var b in Barcelona)
+{
+    iro.WriteLine($"{b.helyszin} ; {b.indulas} ; {b.napok} ; {b.ar}");
+}
+iro.Close();
+
+
+Console.ReadKey();
